@@ -49,7 +49,7 @@ public class Engine {
                 final Location predEye = null;
                 if (cfg.engineMode == 2) {
                     // getPredictedLocation returns null if insufficient data or too slow
-                    final Location predEye = tracker.getPredictedLocation(p);
+                    predEye = tracker.getPredictedLocation(p);
                 }
 
                 RaycastedEntityOcclusion.getScheduler().runTask(p, () -> {
