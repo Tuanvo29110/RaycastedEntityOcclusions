@@ -51,7 +51,7 @@ public class ChunkSnapshotManager {
                             plugin.getLogger().warning("ChunkSnapshotManager: World " + parts[0] + " not found. Please report this on our discord (discord.cubi.games)'");
                             continue;
                         }
-                        Chunk c = w.getChunkAt(
+                        Chunk c = w.getChunkAtAsync(
                                 Integer.parseInt(parts[1]),
                                 Integer.parseInt(parts[2])
                         );
