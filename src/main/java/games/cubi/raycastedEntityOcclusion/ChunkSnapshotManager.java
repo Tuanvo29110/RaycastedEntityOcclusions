@@ -51,11 +51,13 @@ public class ChunkSnapshotManager {
                             plugin.getLogger().warning("ChunkSnapshotManager: World " + parts[0] + " not found. Please report this on our discord (discord.cubi.games)'");
                             continue;
                         }
-                        
-                        Chunk c = w.getChunkAt(
+                        Location loc = new Location(w, Integer.parseInt(parts[1]), 0, Integer.parseInt(parts[2]));
+                        RaycastedEntityOcclusion.getScheduler().runTask(loc, () -> {
+                            Chunk c = w.getChunkAt(
                                 Integer.parseInt(parts[1]),
                                 Integer.parseInt(parts[2])
-                        );
+                            );
+                        });
                         e.setValue(takeSnapshot(c, now));
                     }
                 }
