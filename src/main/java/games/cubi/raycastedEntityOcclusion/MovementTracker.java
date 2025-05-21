@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -15,7 +14,7 @@ public class MovementTracker {
     private final Map<Player, Deque<Location>> history = new ConcurrentHashMap<>();
 
     public MovementTracker(Plugin plugin) {
-        new BukkitRunnable() {
+        new UniversalRunnable() {
             @Override
             public void run() {
                 for (Player p : Bukkit.getOnlinePlayers()) {
