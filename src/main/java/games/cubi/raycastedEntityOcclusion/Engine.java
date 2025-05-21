@@ -43,8 +43,8 @@ public class Engine {
         // ----- PHASE 1: SYNC GATHER -----
         List<RayJob> jobs = new ArrayList<>();
         for (Player p : Bukkit.getOnlinePlayers()) {
+            if (p.hasPermission("raycastedentityocclusions.bypass")) continue;
             RaycastedEntityOcclusion.getScheduler().runTask(p, () -> {
-                if (p.hasPermission("raycastedentityocclusions.bypass")) continue;
                 Location eye = p.getEyeLocation().clone();
                 Location predEye = null;
                 if (cfg.engineMode == 2) {
