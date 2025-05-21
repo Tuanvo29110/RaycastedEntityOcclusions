@@ -41,17 +41,17 @@ public class Engine {
 
     public static void runEngine(ConfigManager cfg, ChunkSnapshotManager snapMgr, MovementTracker tracker, RaycastedEntityOcclusion plugin) {
         // ----- PHASE 1: SYNC GATHER -----
-        List<RayJob> jobs = new ArrayList<>();
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            if (p.hasPermission("raycastedentityocclusions.bypass")) continue;
-            Location eye = p.getEyeLocation().clone();
-            Location predEye = null;
-            if (cfg.engineMode == 2) {
-                // getPredictedLocation returns null if insufficient data or too slow
-                predEye = tracker.getPredictedLocation(p);
-            }
+        RaycastedEntityOcclusion.getScheduler().runTask(plugin, () -> {
+            List<RayJob> jobs = new ArrayList<>();
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                if (p.hasPermission("raycastedentityocclusions.bypass")) continue;
+                Location eye = p.getEyeLocation().clone();
+                Location predEye = null;
+                if (cfg.engineMode == 2) {
+                    // getPredictedLocation returns null if insufficient data or too slow
+                    predEye = tracker.getPredictedLocation(p);
+                }
 
-            RaycastedEntityOcclusion.getScheduler().runTask(p, () -> {
                 for (Entity e : p.getNearbyEntities(cfg.searchRadius, cfg.searchRadius, cfg.searchRadius)) {
                     if (e == p) continue;
                     // Cull-players logic
@@ -59,6 +59,7 @@ public class Engine {
                         p.showEntity(plugin, e);
                         continue;
                     }
+
                     Location target = e.getLocation().add(0, e.getHeight() / 2, 0).clone();
                     double dist = eye.distance(target);
                     if (dist <= cfg.alwaysShowRadius) {
@@ -72,9 +73,8 @@ public class Engine {
                         jobs.add(new RayJob(p.getUniqueId(), e.getUniqueId(), eye, predEye, target));
                     }
                 }
-            });
-        }
-    }
+            }
+        });
 
         // ----- PHASE 2: ASYNC RAYCASTS -----
         RaycastedEntityOcclusion.getScheduler().runTaskAsynchronously(plugin, () -> {
