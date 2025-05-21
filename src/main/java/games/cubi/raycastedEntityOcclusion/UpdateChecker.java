@@ -39,7 +39,7 @@ public class UpdateChecker implements org.bukkit.event.Listener {
     public static CompletableFuture<String> fetchFeaturedVersion(RaycastedEntityOcclusion plugin) {
         CompletableFuture<String> future = new CompletableFuture<>();
 
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        this.getScheduler().runTaskAsynchronously(plugin, () -> {
 
             final String url = "https://api.modrinth.com/v2/project/raycasted-entity-occlusions/version?featured=true";
             try (final InputStreamReader reader = new InputStreamReader(new URL(url).openConnection().getInputStream())) {
@@ -80,7 +80,7 @@ public class UpdateChecker implements org.bukkit.event.Listener {
     public static void checkForUpdates(RaycastedEntityOcclusion plugin, CommandSender audience) {
         fetchFeaturedVersion(plugin).thenAccept(version -> {
             // This runs asynchronously when the version is fetched
-            Bukkit.getScheduler().runTask(plugin, () -> {
+            this.getScheduler().runTask(plugin, () -> {
                 if (plugin.getDescription().getVersion().equals(version)) {
                     audience.sendRichMessage("<green>You are using the latest version of Raycasted Entity Occlusions.");
                 } else {
