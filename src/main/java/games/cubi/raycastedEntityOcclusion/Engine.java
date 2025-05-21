@@ -45,8 +45,8 @@ public class Engine {
         RaycastedEntityOcclusion.getScheduler().runTask(plugin, () -> {
             for (Player p : Bukkit.getOnlinePlayers()) {
                 if (p.hasPermission("raycastedentityocclusions.bypass")) continue;
-                Location eye = p.getEyeLocation().clone();
-                Location predEye = null;
+                final Location eye = p.getEyeLocation().clone();
+                final Location predEye = null;
                 if (cfg.engineMode == 2) {
                     // getPredictedLocation returns null if insufficient data or too slow
                     predEye = tracker.getPredictedLocation(p);
