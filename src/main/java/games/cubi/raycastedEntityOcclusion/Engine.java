@@ -46,7 +46,7 @@ public class Engine {
             for (Player p : Bukkit.getOnlinePlayers()) {
                 if (p.hasPermission("raycastedentityocclusions.bypass")) continue;
                 final Location eye = p.getEyeLocation().clone();
-                final Location predEye = null;
+                Location predEye = null;
                 if (cfg.engineMode == 2) {
                     // getPredictedLocation returns null if insufficient data or too slow
                     predEye = tracker.getPredictedLocation(p);
