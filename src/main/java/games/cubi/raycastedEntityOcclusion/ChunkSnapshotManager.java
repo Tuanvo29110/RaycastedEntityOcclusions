@@ -5,7 +5,6 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.TileState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -35,7 +34,7 @@ public class ChunkSnapshotManager {
             }
         }
 
-        new BukkitRunnable() {
+        new UniversalRunnable() {
             @Override
             public void run() {
                 long now = System.currentTimeMillis();
