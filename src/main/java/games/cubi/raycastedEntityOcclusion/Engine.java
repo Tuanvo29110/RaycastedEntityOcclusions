@@ -75,7 +75,7 @@ public class Engine {
         }
 
         // ----- PHASE 2: ASYNC RAYCASTS -----
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        RaycastedEntityOcclusion.getScheduler().runTaskAsynchronously(plugin, () -> {
             List<RayResult> results = new ArrayList<>(jobs.size());
             for (RayJob job : jobs) {
                 // first cast from real eye
@@ -93,7 +93,7 @@ public class Engine {
             }
 
             // ----- PHASE 3: SYNC APPLY -----
-            Bukkit.getScheduler().runTask(plugin, () -> {
+            RaycastedEntityOcclusion.getScheduler().runTask(plugin, () -> {
                 for (RayResult r : results) {
                     Player p = Bukkit.getPlayer(r.playerId);
                     Entity ent = Bukkit.getEntity(r.entityId);
@@ -113,7 +113,7 @@ public class Engine {
                 if (p.hasPermission("raycastedentityocclusions.bypass")) continue;
                 String world = p.getWorld().getName();
                 //async run with the world passed in
-                Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+                RaycastedEntityOcclusion.getScheduler().runTaskAsynchronously(plugin, () -> {
                     int chunksRadius = (cfg.searchRadius + 15) / 16;
                     HashSet<Location> tileEntities = new HashSet<>();
                     for (int x = -chunksRadius; x <= chunksRadius; x++) {
@@ -180,7 +180,7 @@ public class Engine {
 
     }
     public static void syncToggleTileEntity(Player p, Location loc, boolean bool, RaycastedEntityOcclusion plugin) {
-        Bukkit.getScheduler().runTask(plugin, () -> {
+        RaycastedEntityOcclusion.getScheduler().runTask(plugin, () -> {
             if (bool) {
                 showTileEntity(p, loc);
             } else {
