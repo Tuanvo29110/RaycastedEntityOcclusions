@@ -41,8 +41,8 @@ public class Engine {
 
     public static void runEngine(ConfigManager cfg, ChunkSnapshotManager snapMgr, MovementTracker tracker, RaycastedEntityOcclusion plugin) {
         // ----- PHASE 1: SYNC GATHER -----
+        List<RayJob> jobs = new ArrayList<>();
         RaycastedEntityOcclusion.getScheduler().runTask(plugin, () -> {
-            List<RayJob> jobs = new ArrayList<>();
             for (Player p : Bukkit.getOnlinePlayers()) {
                 if (p.hasPermission("raycastedentityocclusions.bypass")) continue;
                 Location eye = p.getEyeLocation().clone();
