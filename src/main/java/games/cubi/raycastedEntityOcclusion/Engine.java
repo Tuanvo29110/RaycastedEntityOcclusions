@@ -74,6 +74,7 @@ public class Engine {
                 }
             });
         }
+    }
 
         // ----- PHASE 2: ASYNC RAYCASTS -----
         RaycastedEntityOcclusion.getScheduler().runTaskAsynchronously(plugin, () -> {
