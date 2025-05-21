@@ -51,7 +51,7 @@ public class ChunkSnapshotManager {
                             plugin.getLogger().warning("ChunkSnapshotManager: World " + parts[0] + " not found. Please report this on our discord (discord.cubi.games)'");
                             continue;
                         }
-                        Chunk c = w.getChunkAtAsync(
+                        Chunk c = w.getChunkAt(
                                 Integer.parseInt(parts[1]),
                                 Integer.parseInt(parts[2])
                         );
@@ -62,7 +62,7 @@ public class ChunkSnapshotManager {
                     plugin.getLogger().info("ChunkSnapshotManager: Refreshed " + chunksRefreshed + " chunks out of " + chunksToRefreshMaximum + " maximum.");
                 }
             }
-        }.runTaskTimerAsynchronously(plugin, cfg.snapshotRefreshInterval * 2L, cfg.snapshotRefreshInterval * 2L /* This runs 10 times per refreshInterval, spreading out the refreshes */);
+        }.runTaskTimer(plugin, cfg.snapshotRefreshInterval * 2L, cfg.snapshotRefreshInterval * 2L /* This runs 10 times per refreshInterval, spreading out the refreshes */);
     }
 
     public void onChunkLoad(Chunk c) {
