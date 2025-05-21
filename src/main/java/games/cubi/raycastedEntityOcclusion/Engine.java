@@ -52,27 +52,29 @@ public class Engine {
                     predEye = tracker.getPredictedLocation(p);
                 }
 
-                for (Entity e : p.getNearbyEntities(cfg.searchRadius, cfg.searchRadius, cfg.searchRadius)) {
-                    if (e == p) continue;
-                    // Cull-players logic
-                    if (e instanceof Player pl && (!cfg.cullPlayers || (cfg.onlyCullSneakingPlayers && !pl.isSneaking()))) {
-                        p.showEntity(plugin, e);
-                        continue;
-                    }
+                RaycastedEntityOcclusion.getScheduler().runTask(p, () -> {
+                    for (Entity e : p.getNearbyEntities(cfg.searchRadius, cfg.searchRadius, cfg.searchRadius)) {
+                        if (e == p) continue;
+                        // Cull-players logic
+                        if (e instanceof Player pl && (!cfg.cullPlayers || (cfg.onlyCullSneakingPlayers && !pl.isSneaking()))) {
+                            p.showEntity(plugin, e);
+                            continue;
+                        }
 
-                    Location target = e.getLocation().add(0, e.getHeight() / 2, 0).clone();
-                    double dist = eye.distance(target);
-                    if (dist <= cfg.alwaysShowRadius) {
-                        p.showEntity(plugin, e);
-                    } else if (dist > cfg.raycastRadius) {
-                        p.hideEntity(plugin, e);
-                    } else if (p.canSee(e) && plugin.tick % cfg.recheckInterval != 0) {
-                        // player can see entity, no need to raycast
-                    } else {
-                        // schedule for async raycast (with or without predEye)
-                        jobs.add(new RayJob(p.getUniqueId(), e.getUniqueId(), eye, predEye, target));
+                        Location target = e.getLocation().add(0, e.getHeight() / 2, 0).clone();
+                        double dist = eye.distance(target);
+                        if (dist <= cfg.alwaysShowRadius) {
+                            p.showEntity(plugin, e);
+                        } else if (dist > cfg.raycastRadius) {
+                            p.hideEntity(plugin, e);
+                        } else if (p.canSee(e) && plugin.tick % cfg.recheckInterval != 0) {
+                            // player can see entity, no need to raycast
+                        } else {
+                            // schedule for async raycast (with or without predEye)
+                            jobs.add(new RayJob(p.getUniqueId(), e.getUniqueId(), eye, predEye, target));
+                        }
                     }
-                }
+                });
             }
         });
 
