@@ -54,8 +54,8 @@ public class ChunkSnapshotManager {
                         Location loc = new Location(w, Integer.parseInt(parts[1]), 0, Integer.parseInt(parts[2]));
                         RaycastedEntityOcclusion.getScheduler().runTask(loc, () -> {
                             Chunk c = w.getChunkAt(loc);
+                            e.setValue(takeSnapshot(c, now));
                         });
-                        e.setValue(takeSnapshot(c, now));
                     }
                 }
                 if (cfg.debugMode) {
